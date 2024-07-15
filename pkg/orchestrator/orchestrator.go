@@ -28,31 +28,41 @@ type Orchestrator struct {
 	FileEncryptor        *fileencryption.FileEncryptor
 }
 
+// Modificación para retornar un nuevo Orchestrator
 func NewOrchestrator(c clients.Client, ipChecker *ipchecker.IPChecker, portScanner *portscanner.PortScanner, whoisCheck *whoischecker.WhoIsChecker, fileIntegrityChecker *fileintegritychecker.FileIntegrityChecker, metadataCleanner *metadata.MetaDataTools, passwordGenerator *passwordgenerator.PasswordGenerator, fileEncryptor *fileencryption.FileEncryptor) *Orchestrator {
-	if c == nil {
-		panic("nil client")
+	// Función auxiliar para verificar si un valor es nulo y causar un "panic" en caso positivo
+	checkNil := func(name string, value interface{}) {
+		if value == nil {
+			panic("nil " + name)
+		}
 	}
-	if ipChecker == nil {
-		panic("nil ip checker")
+
+	var names = []string{
+		"client",
+		"ip checker",
+		"port scanner",
+		"whois checker",
+		"file integrity checker",
+		"metadata cleaner",
+		"password generator",
+		"file encryptor",
 	}
-	if portScanner == nil {
-		panic("nil port scanner")
+
+	var values = []interface{}{
+		c,
+		ipChecker,
+		portScanner,
+		whoisCheck,
+		fileIntegrityChecker,
+		metadataCleanner,
+		passwordGenerator,
+		fileEncryptor,
 	}
-	if whoisCheck == nil {
-		panic("nil whois checker")
+
+	for i, value := range values {
+		checkNil(names[i], value)
 	}
-	if fileIntegrityChecker == nil {
-		panic("nil file integrity checker")
-	}
-	if metadataCleanner == nil {
-		panic("nil metadata cleanner")
-	}
-	if passwordGenerator == nil {
-		panic("nil password generator")
-	}
-	if fileEncryptor == nil {
-		panic("nil file encryptor")
-	}
+
 	return &Orchestrator{
 		Client:               c,
 		IPChecker:            ipChecker,
